@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>陳柏銘的線上履歷</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+
+    main {
+      padding: 20px;
+      text-align: center;
+    }
+
+    #contactBtn {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    #contactBtn:hover {
+      background-color: #0056b3;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0 16px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+
+    button[type="submit"] {
+      background-color: #28a745;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #218838;
+    }
+
+    #successMsg {
+      display: none;
+      color: green;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>陳柏銘的線上履歷</h1>
+  </header>
+
+  <main>
+    <p>歡迎來到我的個人線上履歷頁面！</p>
+    <button id="contactBtn">聯絡我</button>
+  </main>
+
+  <!-- Modal -->
+  <div id="contactModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>聯絡我</h2>
+      <form id="contactForm" action="https://formspree.io/f/your-form-id" method="POST">
+        <label for="name">姓名:</label>
+        <input type="text" id="name" name="name" value="陳柏銘" required>
+
+        <label for="email">電子郵件:</label>
+        <input type="email" id="email" name="email" placeholder="example@mail.com" required>
+
+        <label for="message">訊息:</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+
+        <button type="submit">送出</button>
+      </form>
+      <p id="successMsg">已送出，感謝您的聯絡！</p>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById("contactModal");
+    const btn = document.getElementById("contactBtn");
+    const span = document.getElementsByClassName("close")[0];
+    const form = document.getElementById("contactForm");
+    const successMsg = document.getElementById("successMsg");
+
+    // 開啟 modal
+    btn.onclick = () => modal.style.display = "block";
+
+    // 點 X 關閉
+    span.onclick = () => modal.style.display = "none";
+
+    // 點 modal 外圍關閉
+    window.onclick = e => {
+      if (e.target == modal) modal.style.display = "none";
+    };
+
+    // 表單送出
+    form.onsubmit = e => {
+      e.preventDefault();
+      // 如果使用 Formspree 或 Getform，可以加上 Ajax 提交
+      fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: {
+          'Accept': 'application/json'
+        }
+      }).then(response => {
+        if (response.ok) {
+          form.style.display = "none";
+          successMsg.style.display = "block";
+        } else {
+          alert("表單送出失敗，請稍後再試。");
+        }
+      }).catch(error => {
+        alert("表單送出失敗，請稍後再試。");
+      });
+    };
+  </script>
+</body>
+</html>
